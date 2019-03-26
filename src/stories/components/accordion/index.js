@@ -15,14 +15,14 @@ import PropTypes from 'prop-types';
 
 export class Accordion extends React.Component {
   static propTypes = {
-    children: instanceOf(Array).isRequired
+    children: PropTypes.instanceOf(Array).isRequired
   }
 
   state = {
-    activePanel: undefined,
+    activePanel: this.props.children[0].props.label
   }
 
-  onClickPanel = (panel) => {
+  onClickPanelItem = (panel) => {
     this.setState({ activePanel: panel })
   }
 
@@ -38,7 +38,7 @@ export class Accordion extends React.Component {
     } = this;
 
     return (
-      <div>
+      <div className="accordion">
         {children.map(child => {
           const { label } = child.props;
 
@@ -47,8 +47,10 @@ export class Accordion extends React.Component {
               activePanel={activePanel}
               key={label}
               label={label}
-              onClick={onClickPanel}
-            />
+              onClick={onClickPanelItem}
+            >
+              {child.props.children}
+            </Panel>
           )
         })}
       </div>
@@ -64,8 +66,44 @@ class Panel extends React.Component {
   }
 
   onClick = () => {
-    const { label, onClick } = this.props;
+    const { label, onClick, activePanel } = this.props;
     onClick(label);
+  }
+
+  render() {
+    const {
+      onClick,
+      props: {
+        activePanel,
+        label,
+        children,
+      },
+      refs: {
+        panel,
+      }
+    } = this;
+
+    let className="panel"
+
+    activePanel === label ? className += ' true' : className += ' false';
+
+    if(className === "panel true" && panel !== undefined) {
+      this.refs.panel.style.maxHeight = this.refs.panel.scrollHeight + 'px';
+    }
+    if(className === "panel false" && panel !== undefined) {
+      panel.style.maxHeight = '0px';
+    }
+
+    return(
+      <>
+        <div onClick={onClick}>
+          <p>{label}</p>
+        </div>
+        <div ref={'panel'} className={className}>
+          {children}
+        </div>
+      </>
+    )
   }
 }
 
