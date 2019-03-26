@@ -31,6 +31,8 @@ export class Accordion extends React.Component {
       onClickPanelItem,
       props: {
         children,
+        className,
+        toggle = false,
       },
       state: {
         activePanel
@@ -38,14 +40,15 @@ export class Accordion extends React.Component {
     } = this;
 
     return (
-      <div className="accordion">
-        {children.map(child => {
+      <div className={"accordion " + className}>
+        {children.map((child, i) => {
           const { label } = child.props;
 
           return (
             <Panel
+              toggle={toggle}
               activePanel={activePanel}
-              key={label}
+              key={i}
               label={label}
               onClick={onClickPanelItem}
             >
@@ -61,8 +64,13 @@ export class Accordion extends React.Component {
 class Panel extends React.Component {
   static propTypes = {
     activePanel: PropTypes.string.isRequire,
-    label: PropTypes.string.isRequired,
+    label: PropTypes.object.isRequired,
     onClick: PropTypes.func.isRequired,
+    toggle: PropTypes.bool.isRequired,
+  }
+
+  state = {
+    open: false,
   }
 
   onClick = () => {
@@ -70,13 +78,22 @@ class Panel extends React.Component {
     onClick(label);
   }
 
+  onClickToggle = () => {
+    this.setState({open: this.state.open ? false : true})
+  }
+
   render() {
     const {
       onClick,
+      onClickToggle,
       props: {
         activePanel,
         label,
         children,
+        toggle,
+      },
+      state: {
+        open,
       },
       refs: {
         panel,
@@ -85,19 +102,33 @@ class Panel extends React.Component {
 
     let className="panel"
 
-    activePanel === label ? className += ' true' : className += ' false';
+    if(!toggle) {
+      activePanel === label ? className += ' true' : className += ' false';
 
-    if(className === "panel true" && panel !== undefined) {
-      this.refs.panel.style.maxHeight = this.refs.panel.scrollHeight + 'px';
+      if(className === "panel true" && panel !== undefined) {
+        panel.style.maxHeight = panel.scrollHeight + 'px';
+      }
+      if(className === "panel false" && panel !== undefined) {
+        panel.style.maxHeight = '0px';
+      }
     }
-    if(className === "panel false" && panel !== undefined) {
-      panel.style.maxHeight = '0px';
+
+    if(toggle) {
+      open ? className += ' true' : className += ' false';
+
+      if(open && panel !== undefined) {
+        panel.style.maxHeight = panel.scrollHeight + 'px';
+      }
+      if(!open && panel !== undefined) {
+        panel.style.maxHeight = '0px';
+      }
     }
+
 
     return(
       <>
-        <div onClick={onClick}>
-          <p>{label}</p>
+        <div onClick={toggle ? onClickToggle : onClick} className={"panel-header"}>
+          {label}
         </div>
         <div ref={'panel'} className={className}>
           {children}
