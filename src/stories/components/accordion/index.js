@@ -101,7 +101,7 @@ class Panel extends React.Component {
     } = this;
 
     let className="panel"
-
+    
     if(!toggle) {
       activePanel === label ? className += ' true' : className += ' false';
 
@@ -112,7 +112,7 @@ class Panel extends React.Component {
         panel.style.maxHeight = '0px';
       }
     }
-
+    // is executed when Accordion has the toggle prop
     if(toggle) {
       open ? className += ' true' : className += ' false';
 
