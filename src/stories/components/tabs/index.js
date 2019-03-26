@@ -19,6 +19,7 @@ export class Tabs extends React.Component {
       onClickTabItem,
       props: {
         children,
+        animation = false,
       },
       state: {
         activeTab
@@ -29,13 +30,13 @@ export class Tabs extends React.Component {
       <div className="tabs">
         <div className="tab-list">
           <div className="row">
-            {children.map(child => {
+            {children.map((child, i) => {
               const { label } = child.props;
 
               return (
                 <Tab
                   activeTab={activeTab}
-                  key={label}
+                  key={i}
                   label={label}
                   onClick={onClickTabItem}
                 />
@@ -58,13 +59,14 @@ export class Tabs extends React.Component {
 export class Tab extends React.Component {
   static propTypes = {
     activeTab: PropTypes.string.isRequired,
-    label: PropTypes.string.isRequired,
+    label: PropTypes.object.isRequired,
     onClick: PropTypes.func.isRequired,
   };
 
   onClick = () => {
     const { label, onClick } = this.props;
     onClick(label);
+    console.log(label);
   }
 
   render() {
@@ -87,7 +89,7 @@ export class Tab extends React.Component {
         className={className}
         onClick={onClick}
       >
-        <p>{label}</p>
+        {label}
       </div>
     )
   }
