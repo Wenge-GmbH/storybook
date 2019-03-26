@@ -1,40 +1,46 @@
 import React from 'react';
 
-export const Button = (props) => {
-  if(props.primary) {
+export const Button = ({disabled, onClick, style, icon, label, primary, outline, plain}) => {
+  if(primary) {
     return (
       <button
-        disabled={props.disabled}
-        onClick={props.onClick}
-        className={"btn-primary " + props.style}>
+        disabled={disabled}
+        onClick={onClick}
+        className={"btn-primary " + style}>
         <div className="flexbox justify-center flex-align-center">
-          {props.icon}<p>{props.label}</p>
+          {icon}<p>{label}</p>
         </div>
       </button>
     )
   }
-  else if(props.outline) {
+  else if(outline) {
     return (
       <button
-        disabled={props.disabled}
-        onClick={props.onClick}
-        className={"btn-border " + props.style}>
+        disabled={disabled}
+        onClick={onClick}
+        className={"btn-border " + style}>
         <div className="flexbox justify-center flex-align-center">
-          {props.icon}<p>{props.label}</p>
+          {icon}<p>{label}</p>
         </div>
       </button>
     )
   }
-  else if(props.plain) {
+  else if(plain) {
     return (
       <button
-        disabled={props.disabled}
-        onClick={props.onClick}
-        className={"btn-plain " + props.style}>
+        disabled={disabled}
+        onClick={onClick}
+        className={"btn-plain " + style}>
         <div className="flexbox justify-center flex-align-center">
-          {props.icon}<p>{props.label}</p>
+          {icon}<p>{label}</p>
         </div>
       </button>
     )
   }
+}
+
+Button.defaultProps = {
+  disabled: false,
+  label: 'Button Text',
+  style: '',
 }
