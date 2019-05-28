@@ -4,6 +4,7 @@ import { Accordion } from './accordion';
 import { Heading } from './heading';
 import { Tabs, Tab } from './tabs';
 import { Modalbox, Trigger } from './modalbox';
+import { Checkbox } from './checkbox';
 
 export {
   Button,
@@ -11,5 +12,6 @@ export {
   Accordion,
   Heading,
   Tabs, Tab,
-  Modalbox, Trigger
+  Modalbox, Trigger,
+  Checkbox
 }
