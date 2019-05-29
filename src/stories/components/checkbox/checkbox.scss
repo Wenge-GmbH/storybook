@@ -5,22 +5,39 @@
   --face-element-color: #8b8d8b;
   --face-shadow-color: rgba(0,0,0,0.3);
 
+  --easing: cubic-bezier(0.78, 0.00, 0.22, 1);
+
   width: 120px;
   height: 50px;
   background-color: var(--checkbox-bg);
   border-radius: 25px;
   padding: 5px;
   cursor: pointer;
+  overflow: hidden;
+
+
+  &:before {
+    content: "";
+    position: absolute;
+    left: 0%;
+    top: 0%;
+    background: linear-gradient(35deg, rgba(200,138,255,1) 0%, rgba(250,156,255,1) 100%);
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: 1s ease-in;
+  }
 
   svg {
     width: 40px;
     height: 40px;
     border-radius: 50%;
     overflow: hidden;
-    transition: 1.4s ease-in-out;
+    transition: 1.2s var(--easing);
+    box-shadow: -1px 3px 4px -1px var(--face-shadow-color);
 
     .sleepy , .happy {
-      transition: 0.8s ease-in-out 0.3s;
+      transition: 0.8s var(--easing) 0.3s;
 
       * {
         fill: var(--face-element-color);
@@ -28,13 +45,13 @@
     }
 
     .happy {
-      transition: 0.8s ease-in-out;
+      transition: 0.8s var(--easing);
       transform: translateX(-70px);
 
       .mouth, .eye {
         transform-origin: auto center;
         transform: scaleY(0.9) translateY(3px);
-        transition: 0.6s cubic-bezier(0.46, -3.85, 0.25, 1);
+        transition: 0.8s cubic-bezier(0.46, -3, 0.25, 1) 0.1s;
       }
     }
     .sleepy * {
@@ -49,7 +66,7 @@
     height: 40px;
     fill: url('#face_gradient');
     // background: linear-gradient(-120deg, var(--face-color-light) 40%, var(--face-color-dark)) 200%;
-    box-shadow: -1px 2px 4px var(--face-shadow-color);
+
   }
   &.checked {
     svg {
@@ -65,14 +82,18 @@
       }
 
       .happy {
-        transition: 0.8s ease-in-out 0.4s;
+        transition: 0.8s var(--easing) 0.4s;
         transform: translateX(0);
 
         .mouth, .eye {
-          transform: scaleY(1) translateY(0px);
-          transition: 0.6s cubic-bezier(0.46, 3.85, 0.25, 1) 0.8s;
+          transform: scaleY(1.1) translateY(-3px);
+          transition: 0.6s cubic-bezier(0.46, 3, 0.25, 1) 0.7s;
         }
       }
+    }
+
+    &:before {
+      opacity: 1;
     }
   }
 }
